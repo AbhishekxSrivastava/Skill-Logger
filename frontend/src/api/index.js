@@ -1,11 +1,11 @@
 import axios from "axios";
 
 // --- 1. Configuration ---
-const API_URL = "https://skill-logger.onrender.com/api";
+// const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5111/api";
 
 // --- 2. Create a pre-configured Axios instance ---
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5111/api",
   withCredentials: true, // This is crucial!
 });
 

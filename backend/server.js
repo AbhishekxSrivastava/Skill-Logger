@@ -13,7 +13,7 @@ const app = express();
 
 // --- CORS Configuration (THE FIX IS HERE) ---
 const corsOptions = {
-  origin: "*",
+  origin: process.env.CLIENT_URL || 'http://localhost:5173', // 1. Allow only your frontend origin
   credentials: true, // 2. Allow cookies and authorization headers
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Optional: Specify allowed methods
 };
