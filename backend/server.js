@@ -11,9 +11,11 @@ import quizRoutes from "./routes/quizRoutes.js";
 dotenv.config();
 const app = express();
 
+const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+
 // --- CORS Configuration (THE FIX IS HERE) ---
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:5173', // 1. Allow only your frontend origin
+  origin: allowedOrigin, // 1. Allow only your frontend origin
   credentials: true, // 2. Allow cookies and authorization headers
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Optional: Specify allowed methods
 };
