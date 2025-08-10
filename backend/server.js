@@ -11,7 +11,7 @@ import quizRoutes from "./routes/quizRoutes.js";
 dotenv.config();
 const app = express();
 
-const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+const allowedOrigin = "http://localhost:5173";
 
 // --- CORS Configuration (THE FIX IS HERE) ---
 const corsOptions = {
