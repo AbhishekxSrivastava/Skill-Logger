@@ -134,8 +134,8 @@ const QuizSetupPage = ({ setQuizConfig }) => {
   const [config, setConfig] = useState({
     topic: "",
     difficulty: "medium",
-    questionCount: 10,
-    timeLimit: 10,
+    questionCount: null,
+    timeLimit: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -147,8 +147,6 @@ const QuizSetupPage = ({ setQuizConfig }) => {
     setLoading(true);
     setError("");
     try {
-      // UPDATED: If the quiz is random, we now create a payload that
-      // specifically includes the user-defined time limit.
       const payload = isRandom ? { timeLimit: config.timeLimit } : config;
 
       const res = await api.post("/quiz/start", payload);
