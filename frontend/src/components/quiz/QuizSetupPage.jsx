@@ -137,14 +137,20 @@ const QuizSetupPage = ({ setQuizConfig }) => {
     questionCount: null,
     timeLimit: null,
   });
-  const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) =>
     setConfig({ ...config, [e.target.name]: e.target.value });
 
   const startQuiz = async (isRandom = false) => {
-    setLoading(true);
+  if(isRandom) {
+    setLoading1(true)
+  }
+  else {
+    setLoading2(true)
+  }
     setError("");
     try {
       const payload = isRandom ? { timeLimit: config.timeLimit } : config;
@@ -226,18 +232,18 @@ const QuizSetupPage = ({ setQuizConfig }) => {
           <Button
             onClick={() => startQuiz(false)}
             className="w-full"
-            disabled={loading}
+            disabled={loading1}
           >
-            {loading ? "Generating..." : "Start Custom Quiz"}{" "}
+            {loading1 ? "Generating..." : "Start Custom Quiz"}{" "}
             <ChevronsRight size={18} />
           </Button>
           <Button
             onClick={() => startQuiz(true)}
             variant="secondary"
             className="w-full"
-            disabled={loading}
+            disabled={loading2}
           >
-            {loading ? "Generating..." : "Start Random Quiz"}{" "}
+            {loading2 ? "Generating..." : "Start Random Quiz"}{" "}
             <ChevronsRight size={18} />
           </Button>
         </div>
