@@ -144,12 +144,12 @@ const QuizSetupPage = ({ setQuizConfig }) => {
   const handleChange = (e) =>
     setConfig({ ...config, [e.target.name]: e.target.value });
 
-  const startQuiz = async (isRandom = false) => {
+  const startQuiz = async () => {
     setLoading1(true)
 
     setError("");
     try {
-      const payload = isRandom ? { timeLimit: config.timeLimit } : config;
+      const payload = config.timeLimit;
 
       const res = await api.post("/quiz/start", payload);
       setQuizConfig(res.data.quiz);
@@ -242,7 +242,7 @@ const QuizSetupPage = ({ setQuizConfig }) => {
 
         <div className="flex flex-col sm:flex-row gap-4">
           <Button
-            onClick={() => startQuiz(false)}
+            onClick={() => startQuiz}
             className="w-full"
             disabled={loading1}
           >
