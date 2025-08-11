@@ -145,12 +145,8 @@ const QuizSetupPage = ({ setQuizConfig }) => {
     setConfig({ ...config, [e.target.name]: e.target.value });
 
   const startQuiz = async (isRandom = false) => {
-  if(isRandom) {
     setLoading1(true)
-  }
-  else {
-    setLoading2(true)
-  }
+
     setError("");
     try {
       const payload = isRandom ? { timeLimit: config.timeLimit } : config;
@@ -160,9 +156,25 @@ const QuizSetupPage = ({ setQuizConfig }) => {
     } catch (err) {
       setError(err.response?.data?.error || "Failed to start quiz.");
     } finally {
-      setLoading(false);
+      setLoading1(false);
     }
   };
+
+    const startQuizRandom = async (isRandom = false) => {
+      setLoading2(true);
+      
+      setError("");
+      try {
+        const payload = isRandom ? { timeLimit: config.timeLimit } : config;
+
+        const res = await api.post("/quiz/start", payload);
+        setQuizConfig(res.data.quiz);
+      } catch (err) {
+        setError(err.response?.data?.error || "Failed to start quiz.");
+      } finally {
+        setLoading2(false);
+      }
+    };
 
   return (
     <div className="p-4 md:p-8 flex items-center justify-center min-h-full">
@@ -238,7 +250,7 @@ const QuizSetupPage = ({ setQuizConfig }) => {
             <ChevronsRight size={18} />
           </Button>
           <Button
-            onClick={() => startQuiz(true)}
+            onClick={() => startQuizRandom(true)}
             variant="secondary"
             className="w-full"
             disabled={loading2}
