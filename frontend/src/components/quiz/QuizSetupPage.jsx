@@ -165,7 +165,7 @@ const QuizSetupPage = ({ setQuizConfig }) => {
           Test Your Knowledge
         </h1>
         <p className="text-gray-400 text-center mb-6">
-          Configure your quiz or start a random one.
+          Configure your Quiz or Start a random one based upon Skills Logs with no time limit.
         </p>
         {error && (
           <p className="bg-red-500/20 text-red-400 border border-red-500/30 p-3 rounded-lg mb-4 text-center">
