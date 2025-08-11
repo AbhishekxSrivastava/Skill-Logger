@@ -134,47 +134,53 @@ const QuizSetupPage = ({ setQuizConfig }) => {
   const [config, setConfig] = useState({
     topic: "",
     difficulty: "medium",
-    questionCount: null,
-    timeLimit: null,
+    questionCount: "", // No default value
+    timeLimit: "", // No default value
   });
-  const [loading1, setLoading1] = useState(false);
-  const [loading2, setLoading2] = useState(false);
+  const [loadingCustom, setLoadingCustom] = useState(false);
+  const [loadingRandom, setLoadingRandom] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) =>
     setConfig({ ...config, [e.target.name]: e.target.value });
 
-  const startQuiz = async () => {
-    setLoading1(true)
+  // --- Logic for the "Start Custom Quiz" button ---
+  const startCustomQuiz = async () => {
+    // Validation: Ensure all fields for a custom quiz are filled.
+    if (!config.topic || !config.questionCount || !config.timeLimit) {
+      setError("Please fill in all fields for a custom quiz.");
+      return;
+    }
 
+    setLoadingCustom(true);
     setError("");
     try {
-      const payload = config.timeLimit;
-
+      // The payload is the entire config object from the form.
+      const payload = config;
       const res = await api.post("/quiz/start", payload);
       setQuizConfig(res.data.quiz);
     } catch (err) {
-      setError(err.response?.data?.error || "Failed to start quiz.");
+      setError(err.response?.data?.error || "Failed to start custom quiz.");
     } finally {
-      setLoading1(false);
+      setLoadingCustom(false);
     }
   };
 
-    const startQuizRandom = async (isRandom = false) => {
-      setLoading2(true);
-      
-      setError("");
-      try {
-        const payload = isRandom ? { timeLimit: config.timeLimit } : config;
-
-        const res = await api.post("/quiz/start", payload);
-        setQuizConfig(res.data.quiz);
-      } catch (err) {
-        setError(err.response?.data?.error || "Failed to start quiz.");
-      } finally {
-        setLoading2(false);
-      }
-    };
+  // --- Logic for the "Start Random Quiz" button ---
+  const startRandomQuiz = async () => {
+    setLoadingRandom(true);
+    setError("");
+    try {
+      // The payload only needs the time limit. The backend will generate the rest.
+      const payload = { timeLimit: config.timeLimit || 10 }; // Fallback to 10 if empty
+      const res = await api.post("/quiz/start", payload);
+      setQuizConfig(res.data.quiz);
+    } catch (err) {
+      setError(err.response?.data?.error || "Failed to start random quiz.");
+    } finally {
+      setLoadingRandom(false);
+    }
+  };
 
   return (
     <div className="p-4 md:p-8 flex items-center justify-center min-h-full">
@@ -183,7 +189,7 @@ const QuizSetupPage = ({ setQuizConfig }) => {
           Test Your Knowledge
         </h1>
         <p className="text-gray-400 text-center mb-6">
-          Configure your Quiz or Start a random one based upon Skills Logs with no time limit.
+          Configure your quiz or start a random one based on your skill logs.
         </p>
         {error && (
           <p className="bg-red-500/20 text-red-400 border border-red-500/30 p-3 rounded-lg mb-4 text-center">
@@ -210,7 +216,6 @@ const QuizSetupPage = ({ setQuizConfig }) => {
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="easy">Easy</option>
-
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
               </select>
@@ -222,6 +227,7 @@ const QuizSetupPage = ({ setQuizConfig }) => {
               <Input
                 name="questionCount"
                 type="number"
+                placeholder="e.g., 10"
                 value={config.questionCount}
                 onChange={handleChange}
               />
@@ -233,6 +239,7 @@ const QuizSetupPage = ({ setQuizConfig }) => {
               <Input
                 name="timeLimit"
                 type="number"
+                placeholder="e.g., 10"
                 value={config.timeLimit}
                 onChange={handleChange}
               />
@@ -242,20 +249,20 @@ const QuizSetupPage = ({ setQuizConfig }) => {
 
         <div className="flex flex-col sm:flex-row gap-4">
           <Button
-            onClick={() => startQuiz}
+            onClick={startCustomQuiz} // <-- Corrected: Calls the right function
             className="w-full"
-            disabled={loading1}
+            disabled={loadingCustom}
           >
-            {loading1 ? "Generating..." : "Start Custom Quiz"}{" "}
+            {loadingCustom ? "Generating..." : "Start Custom Quiz"}{" "}
             <ChevronsRight size={18} />
           </Button>
           <Button
-            onClick={() => startQuizRandom(true)}
+            onClick={startRandomQuiz} // <-- Corrected: Calls the right function
             variant="secondary"
             className="w-full"
-            disabled={loading2}
+            disabled={loadingRandom}
           >
-            {loading2 ? "Generating..." : "Start Random Quiz"}{" "}
+            {loadingRandom ? "Generating..." : "Start Random Quiz"}{" "}
             <ChevronsRight size={18} />
           </Button>
         </div>
