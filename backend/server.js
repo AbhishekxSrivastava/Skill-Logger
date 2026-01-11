@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import cookieParser from "cookie-parser"; // Make sure this is installed and used
+import cookieParser from "cookie-parser"; // Make sure this is installed an used
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -11,7 +11,7 @@ import quizRoutes from "./routes/quizRoutes.js";
 dotenv.config();
 const app = express();
 
-const allowedOrigin = "https://skill-logger.vercel.app";
+const allowedOrigin = "http://localhost:5173";
 
 // --- CORS Configuration (THE FIX IS HERE) ---
 const corsOptions = {
