@@ -11,7 +11,7 @@ import quizRoutes from "./routes/quizRoutes.js";
 dotenv.config();
 const app = express();
 
-const allowedOrigin = "http://localhost:5173";
+const allowedOrigin = "https://skill-logger.vercel.app";
 
 // --- CORS Configuration (THE FIX IS HERE) ---
 const corsOptions = {
