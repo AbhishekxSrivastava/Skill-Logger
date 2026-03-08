@@ -1,5 +1,6 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser"; // Make sure this is installed an used
 import connectDB from "./config/db.js";
@@ -8,7 +9,6 @@ import userRoutes from "./routes/userRoutes.js";
 import skillRoutes from "./routes/skillRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
 
-dotenv.config();
 const app = express();
 
 const allowedOrigin = "https://skill-logger.vercel.app";
